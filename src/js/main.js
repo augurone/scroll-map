@@ -1,50 +1,53 @@
-define(['can/map', 'can/map/define'], function($map) {
+define(['can/map', 'can/map/define'], function ($map) {
   
-  function calcViewable($target_top, $target_height, $view_top, $view_height) {
-    var target_bottom = $target_top + $target_height,
-        view_bottom = $view_top + $view_height;
-    return !($target_top > view_bottom) && !(target_bottom < $view_top);
+  function calcViewable($targetTop, $targetHeight, $viewTop, $viewHeight) {
+    var targetBottom = $targetTop + $targetHeight,
+        viewBottom = $viewTop + $viewHeight;
+    return !($targetTop > viewBottom) && !(targetBottom < $viewTop);
+  }
+  
+  function initRun(check) {
+    if (check) {
+      return check;
+    } else {
+      return false;
+    }
   }
   
   var Watcher = $map.extend({
     define: {
       status: {
-          set: function($target) {
-            this.attr('y', $target.pageYOffset);
-            this.attr('vh', $target.innerHeight);
-          }
+        set: function ($target) {
+          this.attr('y', $target.pageYOffset);
+          this.attr('vh', $target.innerHeight);
+        }
       },
       optimal: {
-        get: function() {
-          var target = this.attr('target');
+        get: function () {
+          var target = initRun(this.attr('target')),
+              targetTop = target.offsetTop,
+              targetBottom = targetTop + target.offsetHeight,
+              viewHeight = this.attr('vh'),
+              viewTop = this.attr('y') + viewHeight / 3,
+              viewBottom = viewTop + viewHeight - viewHeight / 3 * 2;
           
-          if(!target) {
-            return false;
-          }
-          
-          var target_top = target.offsetTop,
-              target_bottom = target_top + target.offsetHeight,
-              view_height = this.attr('vh'),
-              view_top = this.attr('y') + view_height/3,
-              view_bottom = view_top + view_height - view_height/3 * 2;
-          
-          return !(target_top > view_bottom) && !(target_bottom < view_top);
+          return !(targetTop > viewBottom) && !(targetBottom < viewTop);
         },
-        value: false,
-        type: 'boolean'
+        type: 'boolean',
+        value: false
       },
       viewable: {
-        get: function() {
-          var target = this.attr('target'),
-              target_top = target.offsetTop,
-              target_bottom = target_top + target.offsetHeight,
-              view_top = this.attr('y'),
-              view_bottom = view_top + this.attr('vh');
+        get: function () {
+          var target = initRun(this.attr('target')),
+              targetTop = target.offsetTop,
+              targetBottom = targetTop + target.offsetHeight,
+              viewTop = this.attr('y'),
+              viewBottom = viewTop + this.attr('vh');
           
-              return !(target_top > view_bottom) && !(target_bottom < view_top);
+          return !(targetTop > viewBottom) && !(targetBottom < viewTop);
         },
-        value: false,
-        type: 'boolean'
+        type: 'boolean',
+        value: false
       },
       y: {
         type: 'number',
@@ -60,18 +63,17 @@ define(['can/map', 'can/map/define'], function($map) {
     }
   });
   
-  return function($element) {
+  return function ($element) {
     var watcher = new Watcher(),
-        handler = function($event) {
+        handler = function ($event) {
           watcher.attr('status', this);
         };
-    
     watcher.attr('target', $element);
     window.addEventListener('scroll', handler);
-    window.addEventListener('unload', function() {
+    window.addEventListener('unload', function () {
       window.removeEventListener('scroll', handler);
     });
     
     return watcher;
-  }
+  };
 });
