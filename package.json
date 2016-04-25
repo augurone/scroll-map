@@ -1,0 +1,33 @@
+{
+  "name": "scroll-map",
+  "version": "1.0.0",
+  "description": "Map the scroll state of the window compared to the calculated position a target element using AMD and CanJS.",
+  "main": "Gruntfile.js",
+  "scripts": {
+    "test": "grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tappily/scroll-map.git"
+  },
+  "keywords": [
+    "scroll",
+    "js",
+    "can",
+    "amd",
+    "requirejs"
+  ],
+  "author": "tappily",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tappily/scroll-map/issues"
+  },
+  "homepage": "https://github.com/tappily/scroll-map#readme",
+  "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-contrib-jshint": "^1.0.0",
+    "grunt-contrib-watch": "^1.0.0",
+    "grunt-jscs": "^2.8.0",
+    "load-grunt-tasks": "^3.5.0"
+  }
+}
