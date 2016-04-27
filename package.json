@@ -2,7 +2,7 @@
   "name": "scroll-map",
   "version": "1.0.0",
   "description": "Map the scroll state of the window compared to the calculated position a target element using AMD and CanJS.",
-  "main": "Gruntfile.js",
+  "main": "src/js/scroll-map.js",
   "scripts": {
     "test": "grunt test"
   },
